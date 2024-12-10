@@ -49,7 +49,7 @@ class build_bootloader(Command):
         exe = 'run'
         pyi_platform = os.environ.get("PYI_PLATFORM", PLATFORM)
         if "Windows" in pyi_platform:
-            exe = 'run.exe'
+            exe = 'run.dll'
         exe = os.path.join(HOMEPATH, 'PyInstaller', 'bootloader', pyi_platform, exe)
         return os.path.isfile(exe)
 

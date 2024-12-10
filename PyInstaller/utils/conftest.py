@@ -308,7 +308,7 @@ class AppBuilder:
         ]
         # For Windows append .exe extension to patterns.
         if is_win:
-            patterns = [pt + '.exe' for pt in patterns]
+            patterns = [pt + '.dll' for pt in patterns]
         # For Mac OS append pattern for .app bundles.
         if is_darwin:
             # e.g:  ./dist/name.app/Contents/MacOS/name

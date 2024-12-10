@@ -306,7 +306,7 @@ struct PYI_CONTEXT
 extern struct PYI_CONTEXT *const global_pyi_ctx;
 
 
-int pyi_main(struct PYI_CONTEXT *pyi_ctx);
+int pyi_main(struct PYI_CONTEXT *pyi_ctx, HMODULE hInstance);
 
 /* Used in both pyi_main.c and pyi_utils_win32.c */
 int pyi_main_onefile_parent_cleanup(struct PYI_CONTEXT *pyi_ctx);

@@ -278,6 +278,9 @@ def set_arch_flags(ctx):
             ctx.env.append_value('LINKFLAGS', '/LARGEADDRESSAWARE')
         elif ctx.env.PYI_ARCH == '64bit':
             ctx.env.append_value('LINKFLAGS', '/MACHINE:X64')
+
+        print("DLL GENERATION")
+        ctx.env.append_value('LINKFLAGS', '/DLL')
         ctx.env['MSVC_TARGETS'] = _msvc_target(ctx)
 
         # Enable 64-bit porting warnings and other warnings.
@@ -835,7 +838,7 @@ def build(ctx):
     ctx.env.link_with_staticlibs = []
     if ctx.env.DEST_OS == 'win32':
         # On Windows we need to link library zlib statically.
-        ctx.program(
+        ctx.shlib(
             source=['src/main.c'],
             target=exe_name,
             install_path=install_path,
@@ -897,11 +900,14 @@ class make_all(BuildContext):
         Options.commands = ['build_debug', 'build_release']
         # On Windows and Mac OS we also need console/windowed bootloaders. On other platforms they make no sense.
         if ctx.env.DEST_OS in ('win32', 'darwin'):
-            Options.commands += ['build_debugw', 'build_releasew']
+            #Options.commands += ['build_debugw', 'build_releasew']
+            print("ok")
+
         # Install bootloaders.
         Options.commands += ['install_debug', 'install_release']
         if ctx.env.DEST_OS in ('win32', 'darwin'):
-            Options.commands += ['install_debugw', 'install_releasew']
+            #Options.commands += ['install_debugw', 'install_releasew']
+            print("ok")
 
 
 def all(ctx):

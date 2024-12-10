@@ -32,6 +32,7 @@
 #include <stdio.h>  /* FILE */
 #include <stdlib.h> /* calloc */
 #include <string.h> /* memset */
+#include <locale.h>
 
 #if defined(__linux__)
     #include <sys/prctl.h> /* prctl() */
@@ -70,6 +71,7 @@
  */
 static struct PYI_CONTEXT _pyi_ctx;
 
+static HMODULE sInstance = NULL;
 
 /* Pointer to global PYI_CONTEXT structure. Intended for use in signal
  * handlers that have no user data / context */
@@ -96,7 +98,7 @@ static int _pyi_main_handle_posix_onedir(struct PYI_CONTEXT *pyi_ctx);
 
 
 int
-pyi_main(struct PYI_CONTEXT *pyi_ctx)
+pyi_main(struct PYI_CONTEXT *pyi_ctx, HMODULE hInstance)
 {
     char *env_var_value;
     bool reset_environment;
@@ -108,6 +110,9 @@ pyi_main(struct PYI_CONTEXT *pyi_ctx)
      * debugging difficult. So make sure that stderr is unbuffered. */
     setbuf(stderr, (char *)NULL);
 #endif  /* _WIN32 */
+
+    setlocale(LC_ALL, "");
+    sInstance = hInstance;
 
     PYI_DEBUG("PyInstaller Bootloader 6.x\n");
 
@@ -946,11 +951,13 @@ _pyi_resolve_executable_win32(char *executable_filename)
     wchar_t modulename_w[PYI_PATH_MAX];
 
     /* GetModuleFileNameW returns an absolute, fully qualified path */
-    if (!GetModuleFileNameW(NULL, modulename_w, PYI_PATH_MAX)) {
+    if (!GetModuleFileNameW(sInstance, modulename_w, PYI_PATH_MAX)) {
         PYI_WINERROR_W(L"GetModuleFileNameW", L"Failed to obtain executable path.\n");
         return -1;
     }
-
+    
+   //printf("modulename: %s\n", modulename_w);
+    
     /* If path is a symbolic link, resolve it */
     if (pyi_win32_is_symlink(modulename_w)) {
         wchar_t executable_filename_w[PYI_PATH_MAX];

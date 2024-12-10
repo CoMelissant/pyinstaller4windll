@@ -523,8 +523,8 @@ class EXE(Target):
         # Old .spec format included on Windows in 'name' .exe suffix.
         if is_win or is_cygwin:
             # Append .exe suffix if it is not already there.
-            if not self.name.endswith('.exe'):
-                self.name += '.exe'
+            if not self.name.endswith('.dll'):
+                self.name += '.dll'
             base_name = os.path.splitext(os.path.basename(self.name))[0]
         else:
             base_name = os.path.basename(self.name)
@@ -652,7 +652,7 @@ class EXE(Target):
         self.dependencies = self.pkg.dependencies
 
         # Get the path of the bootloader and store it in a TOC, so it can be checked for being changed.
-        exe = self._bootloader_file('run', '.exe' if is_win or is_cygwin else '')
+        exe = self._bootloader_file('run', '.dll' if is_win or is_cygwin else '')
         self.exefiles = [(os.path.basename(exe), exe, 'EXECUTABLE')]
 
         self.__postinit__()

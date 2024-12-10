@@ -66,7 +66,7 @@ wmain(int argc, wchar_t **argv)
     global_pyi_ctx->argc = argc;
     global_pyi_ctx->argv_w = argv;
 
-    return pyi_main(global_pyi_ctx);
+    return pyi_main(global_pyi_ctx, NULL);
 }
 
 #endif /* defined(WINDOWED) */
